@@ -1,5 +1,4 @@
 # trab1-musicomp
-//Luana Gabriele de Sousa Costa
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -198,20 +197,22 @@ float** carregaMatrizGenerica (FILE *file, float **matriz, int linhas, int colun
 
 
 	rewind(file);
+	//printf("%i %i AAAAAA\n", linhas, colunas);
 
-	for(i = 0; i < feof(file); i++){
+	for(i = 0; i < linhas; i++){
 		for(j = 0; j < colunas; j++){
 			fscanf(file, "%f,", &aux);
+			//printf("%f oi\n", aux);
 			matriz[i][j] = aux;
 		}
 	}
-/*	for(i = 0; i < linhas; i++){
+	for(i = 0; i < linhas; i++){
 		for(j = 0; j < colunas; j++){
-			printf("%.2f ", matriz[i][j]);
+			//printf("%.2f ", matriz[i][j]);
 		}
-		printf("\n");
+		//printf("\n");
 
-	}*/
+	}
 
 
 	return matriz;
@@ -302,7 +303,7 @@ float** distEuc(float **matrizTreino, float **matrizTeste, float **distRotulo, i
 int main(){
     FILE *file, *teste, *treino;
     int linhas = 0, colunas = 0, *k, linhasTreino = 0, linhasTeste = 0, colunasTreino = 0, colunasTeste = 0, i, j;
-    float **matrizTreino, **matrizTeste, **distEu, *r;
+    float **matrizTreino = 0, **matrizTeste = 0, **distEu, *r;
 		char *tipo, *arq_Treino, *arq_Teste, *dir_Predicoes;
 
 
@@ -332,17 +333,16 @@ int main(){
   treino = fopen("/Users/luanacosta/Desktop/UFES/2º Período/Programação II.c/Trabson/bateria_validacao/iris/dataset/iris_treino.csv", "r");
 	obtemInfoArquivo(treino, &linhasTreino, &colunasTreino);
 
-	printf(" %i %i\n", linhasTreino, colunasTreino);
+	//printf(" %i %i\n", linhasTreino, colunasTreino);
 	matrizTreino = alocaMatrizGenerica(&linhasTreino, &colunasTreino);
 
 	matrizTreino = carregaMatrizGenerica(treino, matrizTreino, linhasTreino, colunasTreino);
-/*
-	for(i = 0; i < linhasTreino; i++){
+
+	/*for(i = 0; i < linhasTreino; i++){
+		printf("\nluanaTreino %i\n", i);
 		for(j = 0; j < colunasTreino; j++){
 			printf("%.2f ", matrizTreino[i][j]);
 		}
-		printf("\n");
-
 	}*/
 
     //carregaMatriz(treino, matrizTreino);
@@ -354,17 +354,27 @@ int main(){
 
    teste = fopen("/Users/luanacosta/Desktop/UFES/2º Período/Programação II.c/Trabson/bateria_validacao/iris/dataset/iris_teste.csv", "r");
 	 obtemInfoArquivo(teste, &linhasTeste, &colunasTeste);
-	 printf(" %i %i\n", linhasTeste, colunasTeste);
+	 //printf(" %i %i\n", linhasTeste, colunasTeste);
 
 	 matrizTeste = alocaMatrizGenerica(&linhasTeste, &colunasTeste);
 
 	 matrizTeste = carregaMatrizGenerica(teste, matrizTeste, linhasTeste, colunasTeste);
     //carregaMatriz(teste, matrizTeste);
+		/*for(i = 0; i < linhasTeste; i++){
+			printf("\nluanaTeste %i\n", i);
+			for(j = 0; j < colunasTeste; j++){
+				printf("%.2f ", matrizTeste[i][j]);
+			}
+		}*/
+
+
+
 	 int linhasEuc = linhasTeste * linhasTreino;
 	 int colunasEuc = 2;
 	 distEu = alocaMatrizGenerica(&linhasEuc, &colunasEuc);
 
+
 	 distEuc(matrizTreino, matrizTeste, distEu, colunasTeste, linhasTreino, linhasTeste);
 
-
+    return 0;
 }
