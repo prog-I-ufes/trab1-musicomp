@@ -274,28 +274,61 @@ void desalocaMatrizGenerica (float **matriz, int *linhas)
 
 
 // Calcula a distancia euclidiana
-float** distEuc(float **matrizTreino, float **matrizTeste, float **distRotulo, int colunas, int linhasTreino, int linhasTeste){
-		int i, j, k;
+void distEuc(float **matrizTreino, float **matrizTeste, float **dist, int colunas, int linhasTreino, int linhasTeste){
+		int i, j, k, x = 0, linhasEuc;
 		float soma = 0, potencia, euclidiana, rotulo;
+
+		linhasEuc = linhasTeste*linhasTreino;
 
 		for(i = 0; i < linhasTeste; i++){
 			for(j = 0; j < linhasTreino; j++){
 				for(k = 0; k < (colunas - 1); k++){
 					potencia = pow((matrizTeste[i][k] - matrizTreino[j][k]),2);
 					soma = soma + potencia;
-				}
-				euclidiana = sqrt(soma);
-				rotulo = matrizTreino[j][2];
-				//printf("%.2f %.2f\n", euclidiana, rotulo);
-				distRotulo[k][1] = euclidiana;
-				distRotulo[k][2] = rotulo;
 
+				}
+
+				euclidiana = sqrt(soma);
+				rotulo = matrizTreino[j][colunas - 1];
+				//while(x < (linhasEuc)){
+						dist[x][1] = euclidiana;
+						dist[x][2] = rotulo;
+				//	}
+
+			//	printf("euclidiana [%.2f] rotulo [%.2f]\n", euclidiana, rotulo);
+				/*dist[i][1] = 9.9;//euclidiana;
+				dist[i][2] = 12.3;//rotulo;*/
+				soma = 0;
+				x++;
 
 			}
+
+
 		}
+		/*for(i = 0; i < (linhasTeste * linhasTreino); i++){
+ 			 printf("%.2f dentro%.2f\n", dist[i][1], dist[i][2]);
 
-		return distRotulo;
+ 	 }*/
 
+}
+
+float** bubbleSort(float **matriz, int linhas){
+		int i, j, lin;
+		float aux;
+
+
+		for(j = (linhas - 1); j > -1; j--){
+			for(i = 0; i < j; i++){
+				if(matriz[i][1] > matriz[i + 1][1]) { aux = matriz[i][1];
+																							matriz[i][1] = matriz[i + 1][1];
+																							matriz[i + 1][1] = aux; }
+			}
+		}
+		/*for(i = 0; i < linhas; i++){
+				printf("%.2f oi %.2f\n", matriz[i][1], matriz[i][2]);
+		}*/
+
+		return matriz;
 }
 
 
@@ -303,7 +336,7 @@ float** distEuc(float **matrizTreino, float **matrizTeste, float **distRotulo, i
 int main(){
     FILE *file, *teste, *treino;
     int linhas = 0, colunas = 0, *k, linhasTreino = 0, linhasTeste = 0, colunasTreino = 0, colunasTeste = 0, i, j;
-    float **matrizTreino = 0, **matrizTeste = 0, **distEu, *r;
+    float **matrizTreino = 0, **matrizTeste = 0, **distEu = 0, *r, **euclides;
 		char *tipo, *arq_Treino, *arq_Teste, *dir_Predicoes;
 
 
@@ -368,13 +401,30 @@ int main(){
 		}*/
 
 
-
+		
 	 int linhasEuc = linhasTeste * linhasTreino;
 	 int colunasEuc = 2;
 	 distEu = alocaMatrizGenerica(&linhasEuc, &colunasEuc);
 
+	 /*for(i = 0; i < linhasEuc; i++){
+			 distEu[i][1] = 1.2;
+			 distEu[i][2] = 2.5;
+
+	 }*/
 
 	 distEuc(matrizTreino, matrizTeste, distEu, colunasTeste, linhasTreino, linhasTeste);
+
+	 /*for(i = 0; i < linhasEuc; i++){
+			 printf("%.2f sai%.2f\n", distEu[i][1], distEu[i][2]);
+
+	 }*/
+
+	 distEu = bubbleSort(distEu, linhasEuc);
+	 /*for(i = 0; i < linhasEuc; i++){
+			 printf("%.2f sai%.2f\n", distEu[i][1], distEu[i][2]);
+
+	 }*/
+
 
     return 0;
 }
